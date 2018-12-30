@@ -1,0 +1,20 @@
+{
+    "name": "abau/swatch",
+    "description": "Gathers info regarding your project or environment and sends it to different handlers.",
+    "keywords": ["collect", "gather", "metadata", "info", "information", "project"],
+    "type": "project",
+    "homepage": "https://github.com/alexandrubau/swatch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexandru Bau",
+            "email": "alexandru.bau@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {"Swatch\\": "src/Swatch"}
+    }
+}
