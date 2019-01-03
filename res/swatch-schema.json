@@ -65,6 +65,10 @@
                 "class": {
                     "type": "string",
                     "description": "Relative path of handler class."
+                },
+                "formatter": {
+                    "type": "string",
+                    "description": "The identifier of the formatter class."
                 }
             }
         }

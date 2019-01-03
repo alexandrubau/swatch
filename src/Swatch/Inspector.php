@@ -107,6 +107,8 @@ class Inspector
     /**
      * Gathers information from all collectors, formats it
      * and sends it to the handlers.
+     *
+     * @throws \Exception
      */
     public function report(): void
     {
@@ -135,6 +137,7 @@ class Inspector
      * Creates payload containing default information.
      *
      * @return array
+     *
      * @throws \Exception
      */
     protected function createPayload(): array

@@ -29,7 +29,7 @@ class PhpCollector implements CollectorInterface
      */
     public function setName(?string $name)
     {
-        $this->setName($name);
+        $this->name = $name;
         return $this;
     }
 

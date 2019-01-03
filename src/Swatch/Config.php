@@ -24,6 +24,11 @@ class Config
     protected $content;
 
     /**
+     * @var array
+     */
+    protected $data;
+
+    /**
      * Config constructor.
      *
      * @param string $path
@@ -40,6 +45,11 @@ class Config
      */
     public function read(): array
     {
+        if ($this->data) {
+
+            return $this->data;
+        }
+
         $content = file_get_contents($this->path);
 
         if (!$content) {
@@ -51,7 +61,7 @@ class Config
 
         $this->validate($content);
 
-        return $json;
+        return $this->data = $json;
     }
 
     /**
