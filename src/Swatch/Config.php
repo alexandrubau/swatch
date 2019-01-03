@@ -119,7 +119,7 @@ class Config
     /**
      * Retrieves the schema used for validation.
      *
-     * @return object|mixed
+     * @return mixed
      */
     private function getSchema()
     {

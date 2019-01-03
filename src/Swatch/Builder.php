@@ -109,7 +109,7 @@ class Builder
      *
      * @throws \ReflectionException
      */
-    private function buildFromList(array $definitions, callable $callback = null)
+    private function buildFromList(array $definitions, callable $callback = null): array
     {
         $list = [];
 
@@ -170,7 +170,7 @@ class Builder
      *
      * @throws \ReflectionException
      */
-    private function buildClassFromPath(string $class)
+    private function buildClassFromPath(string $class): \ReflectionClass
     {
         if (!class_exists($class)) {
 
