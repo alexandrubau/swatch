@@ -9,7 +9,6 @@ namespace Swatch\Formatter;
  */
 class JsonFormatter implements FormatterInterface
 {
-
     /**
      * @var int
      */
@@ -18,7 +17,7 @@ class JsonFormatter implements FormatterInterface
     /**
      * @var int
      */
-    protected $jsonDepth;
+    protected $jsonDepth = 512;
 
     /**
      * JsonFormatter constructor.

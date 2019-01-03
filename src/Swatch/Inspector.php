@@ -112,7 +112,9 @@ class Inspector
     {
         $payload = $this->createPayload();
 
-        foreach ($this->collectors as $name => $collector) {
+        foreach ($this->collectors as $index => $collector) {
+
+            $name = $collector->getName() ?? $index;
 
             $payload[$name] = $collector->collect();
         }
@@ -123,7 +125,7 @@ class Inspector
 
             $result = $handler->handle($data);
 
-            if ($result !== true) {
+            if ($result === false) {
                 break;
             }
         }
@@ -133,6 +135,7 @@ class Inspector
      * Creates payload containing default information.
      *
      * @return array
+     * @throws \Exception
      */
     protected function createPayload(): array
     {

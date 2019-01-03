@@ -1,7 +1,7 @@
 {
     "name": "abau/swatch",
     "description": "Gathers info regarding your project or environment and sends it to different handlers.",
-    "keywords": ["collect", "gather", "metadata", "info", "information", "project"],
+    "keywords": ["collect", "gather", "metadata", "info", "information", "project", "environment"],
     "type": "project",
     "homepage": "https://github.com/alexandrubau/swatch",
     "license": "MIT",
@@ -12,7 +12,9 @@
         }
     ],
     "require": {
-        "php": "^7.1"
+        "php": "^7.2",
+        "ext-json": "*",
+        "justinrainbow/json-schema": "^5.2"
     },
     "autoload": {
         "psr-4": {"Swatch\\": "src/Swatch"}

@@ -1,0 +1,72 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Swatch",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [ "name" ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Name used to identify this collection of information."
+        },
+        "collectors": {
+            "type": "object",
+            "description": "This is a hash of collector name (keys) and collector class or collector definition (values).",
+            "additionalProperties": {
+                "anyOf": [
+                    { "type": "string" },
+                    { "$ref": "#/definitions/collector" }
+                ]
+            }
+        },
+        "formatters": {
+            "type": "object",
+            "description": "This is a hash of formatter name (keys) and formatter class or formatter definition (values).",
+            "additionalProperties": {
+                "anyOf": [
+                    { "type": "string" },
+                    { "$ref": "#/definitions/formatter" }
+                ]
+            }
+        },
+        "handlers": {
+            "type": "object",
+            "description": "This is a hash of handler name (keys) and handler class or handler definition (values).",
+            "additionalProperties": {
+                "anyOf": [
+                    { "type": "string" },
+                    { "$ref": "#/definitions/handler" }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "collector": {
+            "required": [ "class" ],
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "description": "Relative path of collector class."
+                }
+            }
+        },
+        "formatter": {
+            "required": [ "class" ],
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "description": "Relative path of formatter class."
+                }
+            }
+        },
+        "handler": {
+            "required": [ "class" ],
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "description": "Relative path of handler class."
+                }
+            }
+        }
+    }
+}
