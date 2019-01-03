@@ -38,52 +38,66 @@ class Builder
     {
         $config = $this->config->read();
 
-        $inspector = new Inspector($config['name']);
+        $collectors = $this->buildCollectors($config);
 
-        if (array_key_exists('collectors', $config)) {
+        $handlers = $this->buildHandlers($config);
 
-            $collectors = $this->buildFromList($config['collectors'], function ($id, $def, CollectorInterface $collector) {
+        return new Inspector($config['name'], $collectors, $handlers);
+    }
 
-                $collector->setName($id);
-            });
+    /**
+     * @param array $config
+     * @return array
+     *
+     * @throws \ReflectionException
+     */
+    protected function buildCollectors(array $config): array
+    {
+        if (!array_key_exists('collectors', $config)) {
 
-            $inspector->setCollectors($collectors);
+            return [];
         }
 
-        if (array_key_exists('formatters', $config)) {
+        return $this->buildFromList($config['collectors'], function ($id, $definition, CollectorInterface $collector) {
 
-            $formatters = $this->buildFromList($config['formatters']);
+            $collector->setName($id);
+        });
+    }
+
+    /**
+     * @param array $config
+     * @return array
+     *
+     * @throws \ReflectionException
+     */
+    protected function buildHandlers(array $config): array
+    {
+        if (!array_key_exists('handlers', $config)) {
+
+            return [];
         }
 
-        if (array_key_exists('handlers', $config)) {
+        $formatters = array_key_exists('formatters', $config) ? $this->buildFromList($config['formatters']) : [];
 
-            $formatters = $formatters ?? [];
+        return $this->buildFromList($config['handlers'], function ($id, $definition, HandlerInterface $handler) use ($formatters) {
 
-            $handlers = $this->buildFromList($config['handlers'], function ($id, $def, HandlerInterface $handler) use ($formatters) {
+            if (!is_array($definition)) {
 
-                if (!is_array($def)) {
+                return;
+            }
 
-                    return;
-                }
+            if (!array_key_exists('formatter', $definition)) {
 
-                if (!array_key_exists('formatter', $def)) {
+                return;
+            }
 
-                    return;
-                }
+            if (!array_key_exists($definition['formatter'], $formatters)) {
 
-                if (!array_key_exists($def['formatter'], $formatters)) {
+                throw new \UnexpectedValueException(sprintf('The formatter with id "%s" does not exist', $definition['formatter']));
+            }
 
-                    throw new \UnexpectedValueException(sprintf('The formatter with id "%s" does not exist', $def['formatter']));
-                }
-
-                $handler->setFormatter($formatters[$def['formatter']]);
-            });
-
-
-            $inspector->setHandlers($handlers);
-        }
-
-        return $inspector;
+            $handler->setFormatter($formatters[$definition['formatter']]);
+        });
     }
 
     /**
