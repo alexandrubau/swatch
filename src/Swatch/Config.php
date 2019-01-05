@@ -11,7 +11,7 @@ use JsonSchema\Validator;
  */
 class Config
 {
-    const SCHEMA_PATH = '../../res/swatch-schema.json';
+    const SCHEMA_PATH = 'res/swatch-schema.json';
 
     /**
      * @var string
@@ -19,14 +19,9 @@ class Config
     protected $path;
 
     /**
-     * @var string
-     */
-    protected $content;
-
-    /**
      * @var array
      */
-    protected $data;
+    private $data;
 
     /**
      * Config constructor.
@@ -50,12 +45,7 @@ class Config
             return $this->data;
         }
 
-        $content = file_get_contents($this->path);
-
-        if (!$content) {
-
-            throw new \RuntimeException(sprintf('Could not read %s', $this->path));
-        }
+        $content = $this->getContent();
 
         $json = $this->parse($content);
 
@@ -117,13 +107,35 @@ class Config
     }
 
     /**
+     * Retrieves content from the config file.
+     *
+     * @return string
+     */
+    private function getContent(): string
+    {
+        if (!file_exists($this->path)) {
+
+            throw new \RuntimeException(sprintf('Could not read config from "%s"', $this->path));
+        }
+
+        $content = file_get_contents($this->path);
+
+        if (!$content) {
+
+            throw new \RuntimeException(sprintf('Could not read config from "%s"', $this->path));
+        }
+
+        return $content;
+    }
+
+    /**
      * Retrieves the schema used for validation.
      *
-     * @return mixed
+     * @return object
      */
-    private function getSchema()
+    private function getSchema(): object
     {
-        $path = 'file://' . __DIR__ . '/' . static::SCHEMA_PATH;
+        $path = 'file://' . __DIR__ . '/../../' . static::SCHEMA_PATH;
 
         $schema = (object)['$ref' => $path];
 

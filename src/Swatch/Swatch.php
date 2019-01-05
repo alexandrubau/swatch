@@ -6,12 +6,15 @@ use Swatch\Collector\CollectorInterface;
 use Swatch\Handler\HandlerInterface;
 
 /**
- * Class Inspector
+ * Class Swatch
  *
  * @author Alexandru Bau <alexandru.bau@gmail.com>
  */
-class Inspector
+class Swatch
 {
+    const NAME = 'Swatch';
+    const VERSION = 'v0.0.1';
+
     /**
      * @var CollectorInterface[]|array
      */
@@ -33,7 +36,7 @@ class Inspector
     private $name;
 
     /**
-     * Inspector constructor.
+     * Swatch constructor.
      *
      * @param string $name
      * @param array $collectors
@@ -68,7 +71,7 @@ class Inspector
 
     /**
      * @param CollectorInterface $collector
-     * @return Inspector
+     * @return Swatch
      */
     public function addCollector(CollectorInterface $collector): self
     {
@@ -96,7 +99,7 @@ class Inspector
 
     /**
      * @param HandlerInterface $handler
-     * @return Inspector
+     * @return Swatch
      */
     public function addHandler(HandlerInterface $handler): self
     {
@@ -112,7 +115,7 @@ class Inspector
      */
     public function report(): void
     {
-        $payload = $this->createPayload();
+        $payload = $this->buildPayload();
 
         foreach ($this->collectors as $index => $collector) {
 
@@ -140,7 +143,7 @@ class Inspector
      *
      * @throws \Exception
      */
-    protected function createPayload(): array
+    protected function buildPayload(): array
     {
         $payload = [
             'name' => $this->name,

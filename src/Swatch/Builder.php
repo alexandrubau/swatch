@@ -28,13 +28,13 @@ class Builder
     }
 
     /**
-     * Builds an Inspector instance based on supplied configuration.
+     * Builds an instance based on supplied configuration.
      *
-     * @return Inspector
+     * @return Swatch
      *
      * @throws \ReflectionException
      */
-    public function build(): Inspector
+    public function build(): Swatch
     {
         $config = $this->config->read();
 
@@ -42,7 +42,7 @@ class Builder
 
         $handlers = $this->buildHandlers($config);
 
-        return new Inspector($config['name'], $collectors, $handlers);
+        return new Swatch($config['name'], $collectors, $handlers);
     }
 
     /**
@@ -132,11 +132,11 @@ class Builder
      * Builds an object instance using the supplied definition.
      *
      * @param string|array $definition
-     * @return mixed
+     * @return object
      *
      * @throws \ReflectionException
      */
-    private function buildFromDefinition($definition)
+    private function buildFromDefinition($definition): object
     {
         // Case 1: the definition contains only the string
         if (is_string($definition)) {
