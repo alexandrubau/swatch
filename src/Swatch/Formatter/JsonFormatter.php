@@ -38,7 +38,7 @@ class JsonFormatter implements FormatterInterface
     /**
      * @inheritdoc
      */
-    public function format(array $record): string
+    public function format(array $record)
     {
         return json_encode($record, $this->jsonOptions, $this->jsonDepth);
     }
