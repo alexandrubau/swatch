@@ -34,7 +34,7 @@ Create a file called `swatch.json` with content:
 }
 ```
 
-Run `./vendor/bin/swatch` command.
+Run `./vendor/bin/swatch report` command.
 
 
 ## Documentation
