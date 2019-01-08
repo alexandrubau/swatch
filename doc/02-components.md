@@ -8,7 +8,7 @@ Collectors gather information regarding a certain aspect of the application or e
 
 Formatters convert the report in the appropriate format for the handler.
 
-- [JsonFormatter](../src/Swatch/Formatter/JsonFormatter.php): Outputs the report in JSON format.
+- [JsonFormatter](../src/Swatch/Formatter/JsonFormatter.php): Converts the report in JSON format.
 
 ## Handlers
 
