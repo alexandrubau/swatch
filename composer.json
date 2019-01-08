@@ -1,6 +1,6 @@
 {
     "name": "alexandrubau/swatch",
-    "description": "Gathers info regarding your project or environment and sends it to different handlers.",
+    "description": "Collects various information regarding your project or environment and sends it to different handlers.",
     "keywords": ["collect", "gather", "metadata", "info", "information", "project", "environment", "handle", "send", "report"],
     "type": "project",
     "homepage": "https://github.com/alexandrubau/swatch",

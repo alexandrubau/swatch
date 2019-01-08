@@ -2,7 +2,7 @@
 
 namespace Swatch\Command;
 
-use Swatch\Builder;
+use Swatch\Builder\Builder;
 use Swatch\Config;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

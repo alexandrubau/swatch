@@ -1,6 +1,6 @@
 # Swatch
 
-Helps you collect various information regarding your project or environment and sends it to different handlers.
+Collects various information regarding your project or environment and sends it to different handlers.
 
 ## Installation
 
@@ -8,7 +8,7 @@ Install using `composer require alexandrubau/swatch`.
 
 ## Basic usage
 
-Create a file called `swatch.json` with content:
+Create a file called `swatch.json`:
  
 ```
 {
@@ -39,11 +39,17 @@ Run `./vendor/bin/swatch report` command.
 
 ## Documentation
 
-Soon to come.
+- [Command line config file](doc/01-config.md)
+- [Collectors, formatters and handlers](doc/02-components.md)
+- [Extending components](doc/03-extend.md)
 
 ### Authors
 
 - Alexandru Bau [[Github](https://github.com/alexandrubau)]
+
+### Contributing
+
+Any pull requests are welcome. A full development environment built using Vagrant and Ansible is available [here](https://github.com/alexandrubau/swatch-dev).
 
 ### License
 

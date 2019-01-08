@@ -1,9 +1,12 @@
 <?php
 
-namespace Swatch;
+namespace Swatch\Builder;
 
 use Swatch\Collector\CollectorInterface;
+use Swatch\Config;
+use Swatch\Formatter\FormatterInterface;
 use Swatch\Handler\HandlerInterface;
+use Swatch\Swatch;
 
 /**
  * Class Builder
@@ -47,7 +50,7 @@ class Builder
 
     /**
      * @param array $config
-     * @return array
+     * @return CollectorInterface[]|array
      *
      * @throws \ReflectionException
      */
@@ -58,15 +61,23 @@ class Builder
             return [];
         }
 
-        return $this->buildFromList($config['collectors'], function ($id, $definition, CollectorInterface $collector) {
+        $collectors = [];
+
+        foreach ($config['collectors'] as $id => $definition) {
+
+            $collector = $this->buildFromDefinition($definition);
+
+            $collectors[$id] = $collector;
 
             $collector->setName($id);
-        });
+        }
+
+        return $collectors;
     }
 
     /**
      * @param array $config
-     * @return array
+     * @return HandlerInterface[]|array
      *
      * @throws \ReflectionException
      */
@@ -77,87 +88,66 @@ class Builder
             return [];
         }
 
-        $formatters = array_key_exists('formatters', $config) ? $this->buildFromList($config['formatters']) : [];
+        $formatters = [];
 
-        return $this->buildFromList($config['handlers'], function ($id, $definition, HandlerInterface $handler) use ($formatters) {
+        foreach ($config['formatters'] as $id => $definition) {
+
+            $formatters[$id] = $this->buildFromDefinition($definition);
+        }
+
+        $handlers = [];
+
+        foreach ($config['handlers'] as $id => $definition) {
+
+            $handler = $this->buildFromDefinition($definition);
+
+            $handlers[$id] = $handler;
 
             if (!is_array($definition)) {
-
-                return;
-            }
-
-            if (!array_key_exists('formatter', $definition)) {
-
-                return;
-            }
-
-            if (!array_key_exists($definition['formatter'], $formatters)) {
-
-                throw new \UnexpectedValueException(sprintf('The formatter with id "%s" does not exist', $definition['formatter']));
-            }
-
-            $handler->setFormatter($formatters[$definition['formatter']]);
-        });
-    }
-
-    /**
-     * Builds object instances using the supplied list of definitions.
-     *
-     * @param array $definitions
-     * @param callable $callback
-     * @return array
-     *
-     * @throws \ReflectionException
-     */
-    private function buildFromList(array $definitions, callable $callback = null): array
-    {
-        $list = [];
-
-        foreach ($definitions as $id => $definition) {
-
-            $list[$id] = $this->buildFromDefinition($definition);
-
-            if (!is_callable($callback)) {
 
                 continue;
             }
 
-            $callback($id, $definition, $list[$id]);
+            if (!array_key_exists('formatter', $definition)) {
+
+                continue;
+            }
+
+            if (!array_key_exists($definition['formatter'], $formatters)) {
+
+                $error = sprintf('The formatter with id "%s" does not exist', $definition['formatter']);
+
+                throw new \InvalidArgumentException($error);
+            }
+
+            $handler->setFormatter($formatters[$definition['formatter']]);
         }
 
-        return $list;
+        return $handlers;
     }
 
     /**
      * Builds an object instance using the supplied definition.
      *
      * @param string|array $definition
-     * @return object
+     * @return ComponentInterface|object
      *
      * @throws \ReflectionException
      */
-    private function buildFromDefinition($definition): object
+    private function buildFromDefinition($definition): ComponentInterface
     {
-        // Case 1: the definition contains only the string
         if (is_string($definition)) {
 
             return $this->buildClassFromPath($definition)->newInstance();
         }
 
-        // Case 2: The definition contains an object with only the "class" property
         $name = $definition['class'];
 
         unset($definition['class']);
 
-        if (empty($definition)) {
-
-            return $this->buildClassFromPath($name)->newInstance();
-        }
-
-        // Case 3: The definition contains an object with multiple properties
         $class = $this->buildClassFromPath($name);
 
-        $args = $this->getConstructorArgs($definition, $class);
+        $args = $this->getConstructorArgs($class, $definition);
 
         return $class->newInstanceArgs($args);
     }
@@ -174,7 +164,9 @@ class Builder
     {
         if (!class_exists($class)) {
 
-            throw new \UnexpectedValueException(sprintf('Class "%s" does not exist', $class));
+            $error = sprintf('Class "%s" does not exist', $class);
+
+            throw new \InvalidArgumentException($error);
         }
 
         return new \ReflectionClass($class);
@@ -183,12 +175,13 @@ class Builder
     /**
      * Retrieves a list with constructor arguments or null if the constructor is missing.
      *
-     * @param array $definition
      * @param \ReflectionClass $class
-     * @return array|null
+     * @param array $definition
+     * @return array
+     *
      * @throws \ReflectionException
      */
-    private function getConstructorArgs(array $definition, \ReflectionClass $class): array
+    private function getConstructorArgs(\ReflectionClass $class, array $definition): array
     {
         $args = [];
 
@@ -215,7 +208,9 @@ class Builder
                 continue;
             }
 
-            throw new \UnexpectedValueException(sprintf('Missing value for constructor argument "%s" from class "%s"', $param->getName(), $class->getName()));
+            $error = sprintf('Missing value for constructor argument "%s" from class "%s"', $param->getName(), $class->getName());
+
+            throw new \InvalidArgumentException($error);
         }
 
         return $args;

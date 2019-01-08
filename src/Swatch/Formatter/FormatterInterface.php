@@ -2,12 +2,14 @@
 
 namespace Swatch\Formatter;
 
+use Swatch\Builder\ComponentInterface;
+
 /**
  * Interface FormatterInterface
  *
  * @author Alexandru Bau <alexandru.bau@gmail.com>
  */
-interface FormatterInterface
+interface FormatterInterface extends ComponentInterface
 {
     /**
      * Formats information.

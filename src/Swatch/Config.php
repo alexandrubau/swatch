@@ -68,7 +68,9 @@ class Config
 
             $error = json_last_error_msg();
 
-            throw new \UnexpectedValueException(sprintf('The file "%s" does not contain valid JSON: ' . $error, $this->path));
+            $msg = sprintf('The file "%s" does not contain valid JSON: ' . $error, $this->path);
+
+            throw new \InvalidArgumentException($msg);
         }
 
         return $json;
@@ -103,7 +105,9 @@ class Config
 
         $list = implode(PHP_EOL, $errors);
 
-        throw new \UnexpectedValueException(sprintf('"%s" does not match the expected JSON schema: ' . PHP_EOL . $list, $this->path));
+        $msg = sprintf('"%s" does not match the expected JSON schema:' . PHP_EOL . $list, $this->path);
+
+        throw new \InvalidArgumentException($msg);
     }
 
     /**
@@ -115,14 +119,18 @@ class Config
     {
         if (!file_exists($this->path)) {
 
-            throw new \RuntimeException(sprintf('Could not read config from "%s"', $this->path));
+            $error = sprintf('There is no config file at "%s"', $this->path);
+
+            throw new \RuntimeException($error);
         }
 
         $content = file_get_contents($this->path);
 
         if (!$content) {
 
-            throw new \RuntimeException(sprintf('Could not read config from "%s"', $this->path));
+            $error = sprintf('Could not read config from "%s"', $this->path);
+
+            throw new \RuntimeException($error);
         }
 
         return $content;

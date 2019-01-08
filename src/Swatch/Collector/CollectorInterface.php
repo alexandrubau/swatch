@@ -2,12 +2,14 @@
 
 namespace Swatch\Collector;
 
+use Swatch\Builder\ComponentInterface;
+
 /**
  * Interface CollectorInterface
  *
  * @author Alexandru Bau <alexandru.bau@gmail.com>
  */
-interface CollectorInterface
+interface CollectorInterface extends ComponentInterface
 {
     /**
      * @return string|null

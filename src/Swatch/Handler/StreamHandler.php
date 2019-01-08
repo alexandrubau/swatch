@@ -87,7 +87,9 @@ class StreamHandler implements HandlerInterface
 
             if (!is_resource($this->stream)) {
 
-                throw new \UnexpectedValueException(sprintf('The stream or file "%s" could not be opened: ' . $this->error, $this->url));
+                $error = sprintf('The stream or file "%s" could not be opened: ' . $this->error, $this->url);
+
+                throw new \RuntimeException($error);
             }
         }
 
@@ -122,7 +124,9 @@ class StreamHandler implements HandlerInterface
 
             if (!is_dir($dir)) {
 
-                throw new \UnexpectedValueException(sprintf('There is no existing directory at "%s" and its not buildable: ' . $this->error, $dir));
+                $error = sprintf('There is no directory at "%s" and its not buildable: ' . $this->error, $dir);
+
+                throw new \RuntimeException($error);
             }
         }
 

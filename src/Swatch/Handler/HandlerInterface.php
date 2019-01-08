@@ -2,6 +2,7 @@
 
 namespace Swatch\Handler;
 
+use Swatch\Builder\ComponentInterface;
 use Swatch\Formatter\FormatterInterface;
 
 /**
@@ -9,7 +10,7 @@ use Swatch\Formatter\FormatterInterface;
  *
  * @author Alexandru Bau <alexandru.bau@gmail.com>
  */
-interface HandlerInterface
+interface HandlerInterface extends ComponentInterface
 {
     /**
      * @return FormatterInterface
